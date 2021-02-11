@@ -1,35 +1,34 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json());
+app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
-const db = require("./app/models");
+const db = require('./app/models');
 
 db.sequelize.sync();
 // // drop the table if it already exists
 // db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
+//   console.log('Drop and re-sync db.');
 // });
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+app.get('/', (req, res) => {
+  res.json({ message: 'Bem vindo a api do meu curriculo' });
 });
 
-require("./app/routes/turorial.routes")(app);
+require('./app/routes/turorial.routes')(app);
+require('./app/routes/user.routes')(app);
+require('./app/routes/info.routes')(app);
+require('./app/routes/skill.routes')(app);
+require('./app/routes/exp.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
